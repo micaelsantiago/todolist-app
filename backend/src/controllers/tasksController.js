@@ -1,11 +1,14 @@
 const tasksModel = require('../models/tasksModel');
 
-const getAll = async (req, res) => {
-  const tasks = await tasksModel.getAll();
-
-  return res.status(200).json(tasks);
+class TasksController {
+  async getAll(req, res) {
+    try {
+      const [tasks] = await tasksModel.getAll();
+      return res.status(200).json(tasks);
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }
 
-module.exports = {
-  getAll
-}
+module.exports = new TasksController();
