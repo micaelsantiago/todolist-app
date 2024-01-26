@@ -5,5 +5,6 @@ const router = require('./router');
 
 require('dotenv').config();
 
+app.use(express.json());
 app.use(router);
 app.listen(port);
