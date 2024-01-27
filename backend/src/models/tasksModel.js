@@ -13,6 +13,25 @@ class TasksModel {
 
     return { insertId: createdTask.insertId };
   }
+
+  async updateTask(taskData) {
+    const { id_task, trimmedTask } = taskData;
+    const query = `
+      UPDATE tasks
+      SET task = ?
+      WHERE id = ?
+    `;
+
+    try {
+      const [result] = await connection.execute(query, [trimmedTask, id_task]);
+      const updateSuccessful = result.affectedRows > 0;
+
+      return updateSuccessful;
+    } catch (error) {
+      console.error('Error updating task:', error);
+      return false;
+    }
+  }
 }
 
 module.exports = new TasksModel();

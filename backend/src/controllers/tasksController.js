@@ -37,6 +37,29 @@ class TasksController {
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  async update(req, res) {
+    try {
+      const id_task = req.params.id;
+      const { task } = req.body;
+
+      if (!id_task) return res.status(404).json({ message: 'Invalid task id' });
+      if (!task) return res.status(400).json({ message: 'Task is required' });
+
+      const trimmedTask = task.trim();
+
+      if (trimmedTask === '') return res.status(400).json({ message: 'Task cannot be empty' });
+
+      const updatedTask = await tasksModel.updateTask({ id_task, trimmedTask });
+
+      if (!updatedTask) return res.status(400).json({ message: 'Task update failed' });
+
+      return res.status(200).json({ message: 'Task updated successfully' });
+
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }
 
 module.exports = new TasksController();
