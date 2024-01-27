@@ -32,6 +32,20 @@ class TasksModel {
       return false;
     }
   }
+
+  async deleteTask(idTask) {
+    try {
+      const query = 'DELETE FROM tasks WHERE id = ?';
+      const [result] = await connection.execute(query, [idTask]);
+
+      const taskDeleted = result.affectedRows > 0;
+
+      return taskDeleted;
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      return false;
+    }
+  }
 }
 
 module.exports = new TasksModel();

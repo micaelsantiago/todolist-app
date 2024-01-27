@@ -60,6 +60,22 @@ class TasksController {
       res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  async delete(req, res) {
+    try {
+      const id_task = req.params.id;
+
+      if (!id_task) return res.status(404).json({ message: 'Id not found' });
+
+      const deleteTask = await tasksModel.deleteTask(id_task);
+
+      if (!deleteTask) return res.status(400).json({ message: 'Task delete failed' });
+
+      return res.status(200).json({ message: 'Task deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }
 
 module.exports = new TasksController();
